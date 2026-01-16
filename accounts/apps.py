@@ -35,5 +35,9 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
-        from . import signals  # noqa
-        post_migrate.connect(create_moderator_group, sender=self)
+        from . import signals  # ensures profile signal is loaded
+
+        post_migrate.connect(
+            create_moderator_group,
+            dispatch_uid="accounts.create_moderator_group",
+        )

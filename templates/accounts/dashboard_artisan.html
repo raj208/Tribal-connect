@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Artisan Dashboard | Tribal Connect{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2 style="margin:0 0 6px;">Artisan Dashboard</h2>
+  <p class="muted" style="margin:0 0 16px;">Hi {{ user.username }} 👋</p>
+
+  <div class="row">
+    <a class="btn" href="/artisans/">My Artisan Profile</a>
+    <a class="btn secondary" href="/store/">View Store</a>
+    <a class="btn secondary" href="/">Community Feed</a>
+    <a class="btn secondary" href="/orders/">Orders</a>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #eee;margin:18px 0;">
+
+  <p class="muted" style="margin:0;">
+    Tip: Post your craft story in the community to build trust and increase sales.
+  </p>
+</div>
+{% endblock %}

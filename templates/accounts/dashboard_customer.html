@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Customer Dashboard | Tribal Connect{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2 style="margin:0 0 6px;">Customer Dashboard</h2>
+  <p class="muted" style="margin:0 0 16px;">Hi {{ user.username }} 👋</p>
+
+  <div class="row">
+    <a class="btn" href="/store/">Browse Store</a>
+    <a class="btn secondary" href="/">Go to Community Feed</a>
+    <a class="btn secondary" href="/orders/">My Orders</a>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #eee;margin:18px 0;">
+
+  <p class="muted" style="margin:0;">
+    Tip: Use the community feed to discover artisans, events, and opportunities.
+  </p>
+</div>
+{% endblock %}

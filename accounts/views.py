@@ -15,10 +15,7 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user: User = form.save(commit=False)
-            user.email = form.cleaned_data.get("email", "")
-            user.role = form.cleaned_data.get("role", User.Role.CUSTOMER)
-            user.save()
+            user = form.save()   # <- use the form’s save()
             login(request, user)
             return redirect(request.GET.get("next") or "accounts:dashboard")
     else:
