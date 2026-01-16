@@ -1,0 +1,13 @@
+python manage.py startapp accounts
+python manage.py startapp artisans
+python manage.py startapp blog
+python manage.py startapp catalog
+python manage.py startapp cart
+python manage.py startapp orders
+python manage.py startapp payments
+python manage.py startapp reviews
+python manage.py startapp feed
+python manage.py startapp calendar_app
+python manage.py startapp opportunities
+python manage.py startapp community_core
+
