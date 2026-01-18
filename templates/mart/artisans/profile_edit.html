@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile | Artisan{% endblock %}
+
+{% block content %}
+  <h2 class="mb-3">Edit Artisan Profile</h2>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <form method="post" enctype="multipart/form-data" class="card p-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Save Profile</button>
+        <a class="btn btn-outline-secondary ms-2" href="{% url 'artisans:detail' request.user.username %}">View Public Profile</a>
+      </form>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card p-3">
+        <h5>Add Gallery Photo</h5>
+        <form method="post" enctype="multipart/form-data" action="{% url 'artisans:gallery_add' %}">
+          {% csrf_token %}
+          {{ gallery_form.as_p }}
+          <button class="btn btn-dark" type="submit">Upload</button>
+        </form>
+
+        <hr>
+        <h6 class="mb-2">Current Gallery</h6>
+        <div class="row g-2">
+          {% for img in profile.gallery_images.all %}
+            <div class="col-6">
+              <img src="{{ img.image.url }}" class="img-fluid rounded" alt="gallery">
+            </div>
+          {% empty %}
+            <div class="text-muted small">No images yet.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

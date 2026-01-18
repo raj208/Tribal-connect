@@ -28,6 +28,9 @@ urlpatterns = [
     path("", include("core.urls")),
     path("feed/", include("feed.urls")),
     path("opportunities/", include("opportunities.urls")),
+
+    #MART
+    path("artisans/", include("artisans.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

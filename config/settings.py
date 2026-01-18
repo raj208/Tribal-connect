@@ -46,7 +46,8 @@ INSTALLED_APPS = [
 
     # 'accounts',
     "accounts.apps.AccountsConfig",
-    'artisans',
+    # 'artisans',
+    "artisans.apps.ArtisansConfig",
     'blog',
     'calendar_app',
     'cart',
