@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Moderation Queue | Opportunities{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <h2 style="margin-top:0;">Moderator Queue</h2>
+    <p class="muted">Approve or reject pending submissions.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <h3 style="margin-top:0;">Pending</h3>
+
+    {% for o in pending %}
+      <div style="border-top:1px solid #eee; padding:12px 0;">
+        <div class="muted" style="font-size:14px;">
+          Submitted by {{ o.created_by.username }} • {{ o.created_at|date:"M d, Y H:i" }}
+        </div>
+
+        <h4 style="margin:6px 0;">
+          <a href="/opportunities/{{ o.id }}/">{{ o.title }}</a>
+        </h4>
+
+        <p class="muted" style="margin:0;">{{ o.description|truncatechars:220 }}</p>
+
+        <div style="margin-top:10px; display:flex; gap:10px;">
+          <a href="/opportunities/mod/{{ o.id }}/approve/">Approve</a>
+          <a href="/opportunities/mod/{{ o.id }}/reject/" class="muted">Reject</a>
+        </div>
+      </div>
+    {% empty %}
+      <p class="muted">No pending items.</p>
+    {% endfor %}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Recently Rejected</h3>
+    {% for o in rejected %}
+      <div style="border-top:1px solid #eee; padding:10px 0;">
+        <div class="muted" style="font-size:14px;">
+          {{ o.created_at|date:"M d, Y" }} • {{ o.title }}
+        </div>
+      </div>
+    {% empty %}
+      <p class="muted">No rejected items.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

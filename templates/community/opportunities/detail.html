@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Opportunity | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="muted" style="font-size:14px;">
+      Status: {{ opp.status }}
+      {% if opp.opportunity_type %} • Type: {{ opp.opportunity_type }}{% endif %}
+      {% if opp.deadline %} • Deadline: {{ opp.deadline }}{% endif %}
+    </div>
+
+    <h2 style="margin:8px 0 8px;">{{ opp.title }}</h2>
+
+    {% if opp.location %}<p><b>Location:</b> {{ opp.location }}</p>{% endif %}
+    <p style="white-space:pre-wrap;">{{ opp.description }}</p>
+
+    {% if opp.source_link %}
+      <p><b>Source:</b> <a href="{{ opp.source_link }}" target="_blank" rel="noopener">Open link</a></p>
+    {% endif %}
+
+    <hr/>
+    <a href="/opportunities/">← Back</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Submit Opportunity | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Submit an Opportunity</h2>
+    <p class="muted">Your submission will be visible after Moderator/Admin approval.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+      <a href="/opportunities/" style="margin-left:10px;">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
