@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Reports | Moderation{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <h2 style="margin-top:0;">Open Reports</h2>
+    <p class="muted">Hide/unhide/delete content and resolve reports.</p>
+  </div>
+
+  {% for r in reports %}
+    <div class="card" style="margin-bottom:12px;">
+      <div class="muted" style="font-size:14px;">
+        {{ r.created_at|date:"M d, Y H:i" }} • {{ r.get_reason_display }} • Reporter: {{ r.reporter.username }}
+      </div>
+
+      <p style="margin:8px 0;"><b>Note:</b> {{ r.note|default:"(no note)" }}</p>
+
+      <div class="muted" style="font-size:14px; margin-bottom:8px;">
+        Target type: {{ r.content_type }} • Target id: {{ r.object_id }}
+      </div>
+
+      {% if r.target %}
+        <div style="margin-bottom:10px;">
+          <b>Target preview:</b>
+          <div class="muted">{{ r.target }}</div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+            <input type="hidden" name="action" value="hide" />
+            <button type="submit">Hide</button>
+          </form>
+
+          <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+            <input type="hidden" name="action" value="unhide" />
+            <button type="submit">Unhide</button>
+          </form>
+
+          <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+            <input type="hidden" name="action" value="delete" />
+            <button type="submit">Delete target</button>
+          </form>
+
+          <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+            <input type="hidden" name="action" value="resolve" />
+            <button type="submit">Resolve report</button>
+          </form>
+
+          <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+            <input type="hidden" name="action" value="ignore" />
+            <button type="submit">Ignore</button>
+          </form>
+        </div>
+      {% else %}
+        <p class="muted">Target was deleted or no longer exists.</p>
+        <form method="post" action="/feed/mod/reports/{{ r.id }}/action/">{% csrf_token %}
+          <input type="hidden" name="action" value="resolve" />
+          <button type="submit">Resolve report</button>
+        </form>
+      {% endif %}
+    </div>
+  {% empty %}
+    <div class="card"><p class="muted">No open reports.</p></div>
+  {% endfor %}
+{% endblock %}

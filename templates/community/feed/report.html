@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Report | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Report</h2>
+    <p class="muted">Reporting: {{ target_label }}</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit Report</button>
+      <a href="javascript:history.back()" style="margin-left:10px;">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

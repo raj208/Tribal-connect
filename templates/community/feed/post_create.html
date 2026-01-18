@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Create Post | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Create a Post</h2>
+    <p class="muted">You can upload up to 5 images.</p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div style="color:#b00020; margin-bottom:10px;">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      {{ form.as_p }}
+
+      <p>
+        <label><b>Images (optional, max 5):</b></label><br/>
+        <input type="file" name="images" multiple accept="image/*" />
+      </p>
+
+      <button type="submit">Publish</button>
+      <a href="/feed/" style="margin-left:10px;">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | Feed{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <div class="muted" style="font-size:14px;">
+      {{ post.get_post_type_display }} • by {{ post.author.username }} • {{ post.created_at|date:"M d, Y H:i" }}
+    </div>
+
+    <h2 style="margin:8px 0 8px;">{{ post.title }}</h2>
+
+    {% if post.tags.all %}
+      <div style="margin-bottom:10px;">
+        {% for t in post.tags.all %}
+          <a href="/feed/?tag={{ t.name }}" class="muted" style="margin-right:8px;">#{{ t.name }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <p style="white-space:pre-wrap;">{{ post.body }}</p>
+
+    {% if can_manage_post %}
+      <div style="margin:10px 0; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="/feed/{{ post.id }}/edit/">Edit</a>
+
+        <form method="post" action="/feed/{{ post.id }}/delete/" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <div style="margin:10px 0;">
+        <a href="/feed/{{ post.id }}/report/">Report this post</a>
+      </div>
+    {% endif %}
+
+    {% if images %}
+      <hr />
+      <h3>Images</h3>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        {% for img in images %}
+          <div>
+            <img src="{{ img.image.url }}"
+                 alt="post image"
+                 style="max-width:220px; border-radius:10px; border:1px solid #ddd;" />
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <hr />
+
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <div class="muted">Likes: {{ like_count }} • Comments: {{ comment_count }}</div>
+
+      {% if user.is_authenticated %}
+        <form method="post" action="/feed/{{ post.id }}/like/">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="/feed/{{ post.id }}/" />
+          <button type="submit">{% if liked %}Unlike{% else %}Like{% endif %}</button>
+        </form>
+      {% else %}
+        <a href="/login/">Login to like</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Comments</h3>
+
+    {% if comments %}
+      {% for c in comments %}
+        <div style="border-top:1px solid #eee; padding:10px 0;">
+          <div class="muted" style="font-size:14px;">
+            {{ c.author.username }} • {{ c.created_at|date:"M d, Y H:i" }}
+          </div>
+
+          <div style="white-space:pre-wrap; margin-top:6px;">{{ c.text }}</div>
+
+          <div style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap;">
+            {% if user.is_authenticated %}
+              <a href="/feed/comment/{{ c.id }}/report/">Report</a>
+            {% endif %}
+
+            {% if user.id == c.author.id or is_moderator %}
+              <form method="post" action="/feed/comment/{{ c.id }}/delete/" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="muted">No comments yet.</p>
+    {% endif %}
+
+    <hr />
+
+    {% if user.is_authenticated %}
+      <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Add Comment</button>
+      </form>
+    {% else %}
+      <p class="muted"><a href="/login/">Login</a> to comment.</p>
+    {% endif %}
+  </div>
+{% endblock %}

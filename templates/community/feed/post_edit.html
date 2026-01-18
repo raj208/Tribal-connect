@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Edit Post | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Edit Post</h2>
+    <p class="muted">Post type can’t be changed after creation.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+      <a href="/feed/{{ post.id }}/" style="margin-left:10px;">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

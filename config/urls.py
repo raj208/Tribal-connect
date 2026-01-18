@@ -22,6 +22,7 @@ urlpatterns = [
     path("", include("accounts.urls")),
     path("calendar/", include("calendar_app.urls")),
     path("", include("core.urls")),
+    path("feed/", include("feed.urls")),
 ]
 
     
