@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load roles %}
+{% block title %}Home | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <h2 style="margin-top:0;">Tribal Community</h2>
+    <p class="muted" style="margin-bottom:0;">
+      Stories, culture, events, and opportunities — in one place.
+    </p>
+
+    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+      <a href="/feed/">Explore Feed</a>
+      {% if user.is_authenticated %}
+        <a href="/feed/create/">+ Create Post</a>
+        <a href="/opportunities/submit/">+ Submit Opportunity</a>
+      {% else %}
+        <a href="/signup/">Create Account</a>
+      {% endif %}
+
+      {% if user|is_moderator_user %}
+        <a href="/calendar/create/">+ Add Event</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+    <!-- Latest Posts -->
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <h3 style="margin:0;">Latest Posts</h3>
+        <div style="margin-left:auto;"><a href="/feed/">View all</a></div>
+      </div>
+
+      {% for p in latest_posts %}
+        <div style="border-top:1px solid #eee; padding:10px 0;">
+          <div class="muted" style="font-size:13px;">
+            {{ p.get_post_type_display }} • {{ p.author.username }} • {{ p.created_at|date:"M d" }}
+          </div>
+
+          <div style="margin-top:4px;">
+            <a href="/feed/{{ p.id }}/"><b>{{ p.title|truncatechars:55 }}</b></a>
+          </div>
+
+          {% if p.tags.all %}
+            <div style="margin-top:6px;">
+              {% for t in p.tags.all %}
+                <a href="/feed/?tag={{ t.name }}" class="muted" style="margin-right:8px; font-size:13px;">#{{ t.name }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="muted">No posts yet.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <h3 style="margin:0;">Upcoming Events</h3>
+        <div style="margin-left:auto;"><a href="/calendar/">View calendar</a></div>
+      </div>
+
+      {% for e in upcoming_events %}
+        <div style="border-top:1px solid #eee; padding:10px 0;">
+          <div class="muted" style="font-size:13px;">
+            {{ e.date }} • {{ e.get_category_display }}{% if e.location %} • {{ e.location }}{% endif %}
+          </div>
+          <div style="margin-top:4px;">
+            <a href="/calendar/{{ e.id }}/"><b>{{ e.title|truncatechars:55 }}</b></a>
+          </div>
+        </div>
+      {% empty %}
+        <p class="muted">No upcoming events.</p>
+      {% endfor %}
+
+      {% if user|is_moderator_user %}
+        <div style="margin-top:10px;">
+          <a href="/calendar/create/">+ Add event</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Featured Opportunities (full width) -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <h3 style="margin:0;">Featured Opportunities</h3>
+        <div style="margin-left:auto;"><a href="/opportunities/">View all</a></div>
+      </div>
+
+      {% for o in featured_opps %}
+        <div style="border-top:1px solid #eee; padding:10px 0;">
+          <div class="muted" style="font-size:13px;">
+            {% if o.opportunity_type %}{{ o.opportunity_type }} • {% endif %}
+            {% if o.deadline %}Deadline: {{ o.deadline }} • {% endif %}
+            Posted {{ o.created_at|date:"M d" }}
+          </div>
+
+          <div style="margin-top:4px;">
+            <a href="/opportunities/{{ o.id }}/"><b>{{ o.title|truncatechars:80 }}</b></a>
+          </div>
+
+          <div class="muted" style="margin-top:6px;">
+            {{ o.description|truncatechars:160 }}
+          </div>
+        </div>
+      {% empty %}
+        <p class="muted">No opportunities yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
