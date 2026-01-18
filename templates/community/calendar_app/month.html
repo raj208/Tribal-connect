@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load roles %}
+{% block title %}Calendar | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <h2 style="margin:0;">Cultural Calendar — {{ month_name }} {{ year }}</h2>
+
+      <div style="margin-left:auto; display:flex; gap:10px; align-items:center;">
+        <a href="/calendar/list/">List view</a>
+
+        {% if user|is_moderator_user %}
+          <a href="/calendar/create/">+ Add Event</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+      <a href="/calendar/?year={{ prev_year }}&month={{ prev_month }}">← Prev</a>
+      <a href="/calendar/?year={{ next_year }}&month={{ next_month }}">Next →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr class="muted">
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Mon</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Tue</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Wed</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Thu</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Fri</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Sat</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Sun</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for week in weeks %}
+          <tr>
+            {% for cell in week %}
+              <td style="vertical-align:top; padding:8px; border-top:1px solid #f0f0f0; height:110px; {% if not cell.in_month %}opacity:0.4;{% endif %}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <b {% if cell.is_today %}style="text-decoration:underline;"{% endif %}>
+                    {{ cell.date.day }}
+                  </b>
+                </div>
+
+                {% for ev in cell.events %}
+                  <div style="margin-top:6px; font-size:14px;">
+                    <a href="/calendar/{{ ev.id }}/">
+                      {{ ev.title|truncatechars:22 }}
+                    </a>
+                    <div class="muted" style="font-size:12px;">{{ ev.get_category_display }}</div>
+                  </div>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

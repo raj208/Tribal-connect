@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Add Event | Cultural Calendar{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Add Event</h2>
+    <p class="muted">Only Moderator/Admin can add events.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create</button>
+      <a href="/calendar/" style="margin-left:10px;">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

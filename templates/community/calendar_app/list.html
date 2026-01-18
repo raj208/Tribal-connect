@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load roles %}
+{% block title %}Calendar List | Tribal Community{% endblock %}
+
+{% block content %}
+  <div class="card" style="margin-bottom:14px;">
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <h2 style="margin:0;">Calendar — List</h2>
+
+      <div style="margin-left:auto; display:flex; gap:10px; align-items:center;">
+        <a href="/calendar/">Month view</a>
+        {% if user|is_moderator_user %}
+          <a href="/calendar/create/">+ Add Event</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <form method="get" style="margin-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <label class="muted">Category:</label>
+      <select name="cat">
+        <option value="">All</option>
+        {% for val,label in categories %}
+          <option value="{{ val }}" {% if selected_cat == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  {% for e in events %}
+    <div class="card" style="margin-bottom:12px;">
+      <div class="muted">{{ e.date }} • {{ e.get_category_display }}{% if e.location %} • {{ e.location }}{% endif %}</div>
+      <h3 style="margin:8px 0 6px;"><a href="/calendar/{{ e.id }}/">{{ e.title }}</a></h3>
+      <p class="muted" style="margin:0;">{{ e.description|truncatechars:220 }}</p>
+    </div>
+  {% empty %}
+    <div class="card"><p class="muted">No events yet.</p></div>
+  {% endfor %}
+{% endblock %}
