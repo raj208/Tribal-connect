@@ -31,6 +31,8 @@ urlpatterns = [
 
     #MART
     path("artisans/", include("artisans.urls")),
+    path("cart/", include("cart.urls")),
+    path("catalog/", include("catalog.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

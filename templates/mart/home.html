@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Home | Tribal Mart{% endblock %}
+
+{% block content %}
+  <div class="p-4 bg-light rounded mb-4">
+    <h1 class="mb-2">Tribal Mart</h1>
+    <p class="mb-0">Marketplace for tribal artisans — stories, crafts, and handmade products.</p>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h4 class="mb-0">Latest Products</h4>
+    <a class="btn btn-outline-dark btn-sm" href="{% url 'catalog:product_list' %}">Browse all</a>
+  </div>
+
+  <div class="row g-3">
+    {% for p in latest_products %}
+      <div class="col-6 col-md-3">
+        <a class="text-decoration-none text-dark" href="{% url 'catalog:product_detail' p.pk %}">
+          <div class="card h-100">
+            {% if p.main_image %}
+              <img src="{{ p.main_image.url }}" class="card-img-top" alt="product">
+            {% endif %}
+            <div class="card-body">
+              <div class="fw-semibold">{{ p.title }}</div>
+              <div class="small text-muted">{{ p.artisan.display_name|default:p.artisan.user.username }}</div>
+              <div class="mt-2">₹{{ p.price }}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <p class="text-muted">No products yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

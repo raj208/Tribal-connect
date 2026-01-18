@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Products | Tribal Mart{% endblock %}
+
+{% block content %}
+  <h2 class="mb-3">Products</h2>
+
+  <form class="row g-2 mb-3" method="get">
+    <div class="col-md-6">
+      <input class="form-control" name="q" value="{{ q }}" placeholder="Search products...">
+    </div>
+    <div class="col-md-4">
+      <select class="form-control" name="category">
+        <option value="">All categories</option>
+        {% for c in categories %}
+          <option value="{{ c.slug }}" {% if cat == c.slug %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-dark w-100" type="submit">Filter</button>
+    </div>
+  </form>
+
+  <div class="row g-3">
+    {% for p in products %}
+      <div class="col-6 col-md-3">
+        <a class="text-decoration-none text-dark" href="{% url 'catalog:product_detail' p.pk %}">
+          <div class="card h-100">
+            {% if p.main_image %}
+              <img src="{{ p.main_image.url }}" class="card-img-top" alt="product">
+            {% endif %}
+            <div class="card-body">
+              <div class="fw-semibold">{{ p.title }}</div>
+              <div class="small text-muted">{{ p.artisan.display_name|default:p.artisan.user.username }}</div>
+              <div class="mt-2">₹{{ p.price }}</div>
+              {% if p.is_made_to_order %}
+                <div class="small text-muted">Made-to-order • {{ p.production_time_days }} days</div>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <p class="text-muted">No products found.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

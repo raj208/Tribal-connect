@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My Products{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">My Products</h2>
+    <a class="btn btn-primary" href="{% url 'catalog:product_create' %}">+ New Product</a>
+  </div>
+
+  <div class="list-group">
+    {% for p in products %}
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+         href="{% url 'catalog:product_edit' p.pk %}">
+        <div>
+          <div class="fw-semibold">{{ p.title }}</div>
+          <div class="small text-muted">₹{{ p.price }} • {% if p.is_active %}Active{% else %}Hidden{% endif %}</div>
+        </div>
+        <span class="text-muted">Edit →</span>
+      </a>
+    {% empty %}
+      <div class="text-muted">No products yet. Create your first product.</div>
+    {% endfor %}
+  </div>
+{% endblock %}
