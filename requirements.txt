@@ -2,7 +2,8 @@ django
 pillow
 
 # python -m django startproject config .
-django 
-pillow 
+# django 
+# pillow 
 razorpay
-.env
+
+python-dotenv
