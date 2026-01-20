@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Incoming Orders{% endblock %}
+
+{% block content %}
+  <h2 class="mb-3">Incoming Orders (Paid)</h2>
+
+  <div class="list-group">
+    {% for it in items %}
+      <a class="list-group-item list-group-item-action"
+         href="{% url 'orders:artisan_order_detail' it.order.id %}">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="fw-semibold">Order #{{ it.order.id }}</div>
+            <div class="small text-muted">Customer: {{ it.order.user.username }} • {{ it.order.created_at }}</div>
+            <div class="small">Item: {{ it.title }} × {{ it.quantity }}</div>
+          </div>
+          <div class="text-end">
+            <span class="badge bg-secondary">{{ it.fulfillment_status }}</span><br>
+            <span class="fw-semibold">₹{{ it.line_total }}</span>
+          </div>
+        </div>
+      </a>
+    {% empty %}
+      <div class="text-muted">No paid orders yet.</div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }} (Artisan){% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Order #{{ order.id }}</h2>
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'orders:artisan_orders' %}">Back</a>
+  </div>
+
+  <div class="card p-3 mb-3">
+    <h5 class="mb-2">Shipping Address</h5>
+    <div>{{ order.full_name }} • {{ order.phone }}</div>
+    <div class="text-muted">
+      {{ order.address_line1 }}{% if order.address_line2 %}, {{ order.address_line2 }}{% endif %},
+      {{ order.city }}, {{ order.state }} - {{ order.pincode }}
+    </div>
+  </div>
+
+  <div class="card p-3">
+    <h5 class="mb-3">Your Items in this Order</h5>
+
+    {% for it in items %}
+      <div class="border rounded p-3 mb-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="fw-semibold">{{ it.title }}</div>
+            <div class="small text-muted">Qty: {{ it.quantity }} • ₹{{ it.price }} each</div>
+          </div>
+          <div class="fw-semibold">₹{{ it.line_total }}</div>
+        </div>
+
+        <div class="mt-3 d-flex gap-2 align-items-center">
+          <span class="small text-muted">Status:</span>
+          <form method="post" action="{% url 'orders:artisan_item_update_status' it.id %}" class="d-flex gap-2">
+            {% csrf_token %}
+            <select class="form-control" name="status">
+              {% for v, label in it.FulfillmentStatus.choices %}
+                <option value="{{ v }}" {% if it.fulfillment_status == v %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-dark btn-sm" type="submit">Update</button>
+          </form>
+        </div>
+
+        <div class="small text-muted mt-2">
+          {% if it.shipped_at %}Shipped: {{ it.shipped_at }}{% endif %}
+          {% if it.delivered_at %} • Delivered: {{ it.delivered_at }}{% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
