@@ -71,7 +71,7 @@ def checkout(request):
 
     return render(
         request,
-        "orders/checkout.html",
+        "mart/orders/checkout.html",
         {
             "form": form,
             "cart_items": cart_items,

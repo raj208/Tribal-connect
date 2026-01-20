@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'opportunities',
     'orders',
     'payments',
-    'reviews',
+    # 'reviews',
+    'reviews.apps.ReviewsConfig',
     'core',
 
 ]
