@@ -168,9 +168,9 @@ FLAT_SHIPPING_FEE = 60  # INR
 
 
 
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "")
 
-RAZORPAY_KEY_ID = "rzp_test_S0xmbDgBcHURfH"
-RAZORPAY_KEY_SECRET = "wAeZP88MogslYfeL5ftv4Df3"
 
 CACHES = {
     "default": {
